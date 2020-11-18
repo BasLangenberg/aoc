@@ -15,7 +15,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Final floor: %d", getfloor(input))
+	fmt.Printf("Final floor: %d\n", getfloor(input))
+	fmt.Printf("Hit basement at: %d\n", basementhit(input))
 }
 func getfloor(instructions []byte) int {
 	var floor int
@@ -25,6 +26,24 @@ func getfloor(instructions []byte) int {
 		}
 		if string(char) == "(" {
 			floor++
+		}
+	}
+	return floor
+}
+
+func basementhit(instructions []byte) int {
+	var floor int
+
+	for pos, char := range instructions {
+		if string(char) == ")" {
+			floor--
+		}
+		if string(char) == "(" {
+			floor++
+		}
+
+		if floor == -1 {
+			return pos + 1
 		}
 	}
 	return floor
