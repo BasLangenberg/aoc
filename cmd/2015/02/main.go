@@ -11,6 +11,8 @@ import (
 
 func main() {
 	var paper int
+	var lint int
+
 	input, err := os.Open("input")
 	defer input.Close()
 
@@ -21,15 +23,23 @@ func main() {
 	scanner.Split(bufio.ScanLines)
 
 	for scanner.Scan() {
-		out, err := wrappingrequired(scanner.Text())
+		line := scanner.Text()
+		out, err := wrappingrequired(line)
+		if err != nil {
+			fmt.Printf("Unable to read line: %v", err)
+			os.Exit(1)
+		}
+		lout, err := lintrequired(line)
 		if err != nil {
 			fmt.Printf("Unable to read line: %v", err)
 			os.Exit(1)
 		}
 		paper += out
+		lint += lout
 	}
 
 	fmt.Printf("Required paper: %d\n", paper)
+	fmt.Printf("Required lint: %d\n", lint)
 
 }
 
@@ -53,6 +63,42 @@ func wrappingrequired(dimensions string) (int, error) {
 	return papersize, nil
 }
 
+func lintrequired(dimensions string) (int, error) {
+	var dims []int
+	var smalldims []int
+	var lintsize int
+
+	for _, size := range strings.Split(dimensions, "x") {
+		dim, err := strconv.Atoi(size)
+		if err != nil {
+			return 0, fmt.Errorf("Unable to parse string to int: %v", size)
+		}
+		dims = append(dims, dim)
+	}
+
+	lintsize += dims[0] * dims[1] * dims[2]
+
+	for i := 0; i < 2; i++ {
+		small := getsmallestnum(dims)
+		for pos, val := range dims {
+			if val == small {
+				smalldims = append(smalldims, small)
+				if len(smalldims) == 2 {
+					break
+				}
+				dims[len(dims)-1], dims[pos] = dims[pos], dims[len(dims)-1]
+				dims = dims[:len(dims)-1]
+			}
+		}
+	}
+
+	if len(smalldims) == 1 {
+		smalldims[1] = smalldims[0]
+	}
+
+	lintsize += smalldims[0] + smalldims[0] + smalldims[1] + smalldims[1]
+	return lintsize, nil
+}
 func getsmallestdim(nums []int) int {
 	smallest := math.MaxInt32
 
@@ -68,4 +114,15 @@ func getsmallestdim(nums []int) int {
 	}
 
 	return smallest
+}
+
+// TODO Refactor to own package
+func getsmallestnum(input []int) int {
+	resp := math.MaxInt32
+	for _, i := range input {
+		if i < resp {
+			resp = i
+		}
+	}
+	return resp
 }
