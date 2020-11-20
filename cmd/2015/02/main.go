@@ -83,11 +83,9 @@ func lintrequired(dimensions string) (int, error) {
 		for pos, val := range dims {
 			if val == small {
 				smalldims = append(smalldims, small)
-				if len(smalldims) == 2 {
-					break
-				}
 				dims[len(dims)-1], dims[pos] = dims[pos], dims[len(dims)-1]
 				dims = dims[:len(dims)-1]
+				break
 			}
 		}
 	}
