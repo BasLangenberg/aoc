@@ -33,13 +33,6 @@ func main() {
 	fmt.Printf("Part A: Amount of trees hit: %v\n", checkSlope([]int{1, 3}))
 
 	// Part B
-
-	//Right 1, down 1.
-	//Right 3, down 1. (This is the slope you already checked.)
-	//Right 5, down 1.
-	//Right 7, down 1.
-	//Right 1, down 2.
-
 	slopes := [][]int{
 		{1, 1},
 		{1, 3},
@@ -54,7 +47,7 @@ func main() {
 	}
 
 	amount := 1
-	for i := 1; i < len(trees); i++ {
+	for i := 0; i < len(trees); i++ {
 		amount = amount * trees[i]
 	}
 
@@ -64,15 +57,10 @@ func main() {
 func checkSlope(slope []int) int {
 	coords := [][]int{[]int{0, 0}}
 
-	for i := 0; i < len(gamemap)-1; i++ {
+	for i := 0; i < len(gamemap)-1; i += slope[0] {
 		currentCords := make([]int, 2)
 		copy(currentCords, coords[len(coords)-1])
 
-		if currentCords[0]+slope[0] >= len(gamemap)-1 {
-			currentCords[0] = currentCords[0] + 1
-			coords = append(coords, currentCords)
-			break
-		}
 		currentCords[0] = currentCords[0] + slope[0]
 		currentCords[1] = currentCords[1] + slope[1]
 
