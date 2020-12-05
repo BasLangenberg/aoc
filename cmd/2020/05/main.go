@@ -37,7 +37,15 @@ func main() {
 	// Sequences should be ignored! ;-)
 	// Will probably not fix this later
 
-	for i := 8; i < 839; i++ {
+	min := memo[0][2]
+
+	for _, bp := range memo {
+		if bp[2] < min {
+			min = bp[2]
+		}
+	}
+
+	for i := min; i < 839; i++ {
 		var found bool
 		for _, bp := range memo {
 			if bp[2] == i {
