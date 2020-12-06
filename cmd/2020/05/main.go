@@ -33,10 +33,6 @@ func main() {
 	fmt.Printf("highest Seat ID: %v\n", biggestSeatID)
 
 	// Part B
-	// This part is super naive. I figured it out by looking at the output below
-	// Sequences should be ignored! ;-)
-	// Will probably not fix this later
-
 	min := memo[0][2]
 
 	for _, bp := range memo {
