@@ -62,6 +62,8 @@ func main() {
 	}
 
 	fmt.Println(len(uniqFoundBags))
+	fmt.Println(bagsInbag("shiny gold bag", bags))
+
 }
 
 func findContains(bags []bag, bag string) []string {
@@ -76,4 +78,21 @@ func findContains(bags []bag, bag string) []string {
 	}
 
 	return found
+}
+
+func bagsInbag(bag string, bags []bag) int {
+	var count int
+
+	for _, bg := range bags {
+		if bg.name == bag {
+			if len(bg.bags) == 0 {
+				return 0
+			}
+			for _, b := range bg.bags {
+				inbags := bagsInbag(b.name, bags)
+				count += (b.amount * inbags) + b.amount
+			}
+		}
+	}
+	return count
 }
