@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 )
 
@@ -29,32 +30,46 @@ func main() {
 		inputnumbers = append(inputnumbers, num)
 	}
 
-	preamble, values := getPreAmble(5, inputnumbers)
+	pvalue := 25
 
-	found := make(map[int]bool)
+	for i := pvalue; i < (len(inputnumbers) - pvalue); i++ {
+		found := make(map[int]bool)
 
-	for pos, pre := range preamble {
-		for _, num := range preamble[:pos] {
-			found[pre+num] = true
+		for y := i - pvalue; y < i; y++ {
+			for _, num := range inputnumbers[i-pvalue : y] {
+				fnd := num + inputnumbers[y]
+				found[fnd] = true
+			}
+			for _, num := range inputnumbers[y+1 : i] {
+				fnd := num + inputnumbers[y]
+				found[fnd] = true
+			}
 		}
-		for _, num := range preamble[pos+1:] {
-			found[pre+num] = true
+
+		if _, ok := found[inputnumbers[i]]; !ok {
+			fmt.Println(inputnumbers[i])
 		}
 	}
-	fmt.Printf("%+v", found)
 
-	for _, num := range values {
-		if _, ok := found[num]; !ok {
-			fmt.Println(num)
-			break
+	toMatch := 756008079
+
+	for i := 0; i < len(inputnumbers); i++ {
+		var tmp int
+		var list []int
+		for y := i + 1; y < len(inputnumbers); y++ {
+			if tmp > toMatch {
+				break
+			}
+
+			tmp += inputnumbers[y]
+			list = append(list, inputnumbers[y])
+
+			if tmp == toMatch {
+				fmt.Printf("Range found: %+v\n", list)
+				sort.Ints(list)
+				fmt.Printf("Answer: %v (lowest + highest)\n", list[0]+list[len(list)-1])
+			}
 		}
 	}
 
-}
-
-func getPreAmble(preamb int, input []int) (preamble, values []int) {
-	preamble = input[:preamb]
-	values = input[preamb:]
-
-	return preamble, values
 }
