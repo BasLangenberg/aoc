@@ -35,7 +35,9 @@ func main() {
 
 	for {
 		fmt.Printf("Pass: %v\n", count)
+
 		newplan := make([][]rune, len(cache[count]))
+
 		for i := range cache[count] {
 			newplan[i] = make([]rune, len(cache[count][i]))
 			copy(newplan[i], cache[count][i])
@@ -43,12 +45,13 @@ func main() {
 
 		newplan = parseMap(newplan)
 
-		fmt.Printf("%+v\n", plan)
-		fmt.Printf("%+v\n", newplan)
+		printMap(cache[count])
+		printMap(newplan)
 
 		if reflect.DeepEqual(newplan, cache[count]) {
 			break
 		}
+
 		count++
 		cache[count] = newplan
 	}
@@ -66,27 +69,44 @@ func main() {
 	fmt.Printf("Seats occupied: %v\n", countOccupied)
 }
 
+func printMap(plan [][]rune) {
+	fmt.Println()
+	fmt.Println("===================================================")
+	fmt.Println()
+	for _, i := range plan {
+		fmt.Println(string(i))
+	}
+}
+
 func parseMap(plan [][]rune) [][]rune {
+	newplan := make([][]rune, len(plan))
+
+	for i := range plan {
+		newplan[i] = make([]rune, len(plan[i]))
+		copy(newplan[i], plan[i])
+	}
+
 	for vpos, line := range plan {
 		for hpos, char := range line {
 			if char == '.' {
 				continue
 			}
-			occupied, _ := parseNeighbours(hpos, vpos, plan)
+			occupied, empty := parseNeighbours(hpos, vpos, plan)
+			fmt.Printf("Cord: %v,%v - occupied: %v, empty: %v\n", hpos, vpos, occupied, empty)
 			if plan[vpos][hpos] == 'L' {
 				if occupied == 0 {
-					plan[vpos][hpos] = '#'
+					newplan[vpos][hpos] = '#'
 				}
 			}
 			if plan[vpos][hpos] == '#' {
 				if occupied > 3 {
-					plan[vpos][hpos] = 'L'
+					newplan[vpos][hpos] = 'L'
 				}
 			}
 		}
 	}
 
-	return plan
+	return newplan
 }
 
 func parseNeighbours(hpos, vpos int, plan [][]rune) (int, int) {
