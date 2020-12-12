@@ -72,6 +72,7 @@ func main() {
 	bCount := 0
 
 	bCache[bCount] = plan
+	// printMap(plan)
 
 	for {
 		// fmt.Printf("Pass: %v\n", count)
@@ -86,7 +87,7 @@ func main() {
 		newplan = parseMapPartB(newplan)
 
 		//printMap(cache[count])
-		//printMap(newplan)
+		// printMap(newplan)
 
 		if reflect.DeepEqual(newplan, bCache[bCount]) {
 			break
@@ -106,17 +107,21 @@ func main() {
 		}
 	}
 	fmt.Printf("Part B - Seats occupied too high: %v\n", 3010)
-	printMap(bCache[bCount])
+	fmt.Printf("Part B - Seats occupied too high: %v\n", 2295)
+	// printMap(bCache[bCount])
 	fmt.Printf("Part B - Seats occupied: %v\n", countOccupied)
 }
 
 func printMap(plan [][]rune) {
 	fmt.Println()
-	fmt.Println("===================================================")
-	fmt.Println()
+
 	for _, i := range plan {
 		fmt.Println(string(i))
 	}
+
+	fmt.Println()
+	// fmt.Println("===================================================")
+	// fmt.Println()
 }
 
 func parseMapPartB(plan [][]rune) [][]rune {
@@ -307,6 +312,7 @@ func parseNeighboursPartB(hpos, vpos int, plan [][]rune) (int, int) {
 				break
 			}
 		}
+		count++
 	}
 
 	return occupied, empty
