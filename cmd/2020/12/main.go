@@ -194,7 +194,7 @@ func (s *ferry) move(inst *instruction) {
 			case 180:
 				s.Facing = "E"
 			case 270:
-				s.Facing = "W"
+				s.Facing = "N"
 			default:
 				fmt.Printf("Unable to parse instruction %v - %v", inst.Dir, inst.Steps)
 			}
