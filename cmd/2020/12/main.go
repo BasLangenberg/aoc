@@ -13,9 +13,10 @@ type instruction struct {
 }
 
 type ferry struct {
-	Facing  string
-	Pos     []int
-	PrevPos [][]int
+	Facing      string
+	Pos         []int
+	WayPointPos []int
+	PrevPos     [][]int
 }
 
 func main() {
@@ -52,6 +53,7 @@ func main() {
 
 	}
 
+	// Part A
 	for _, inst := range instr {
 		ship.PrevPos = append(ship.PrevPos, []int{ship.Pos[0], ship.Pos[1]})
 		ship.move(&inst)
@@ -61,10 +63,24 @@ func main() {
 	// fmt.Printf("%+v\n", ship.PrevPos)
 
 	fmt.Printf("Manhattan distance: %v, %v\n", ship.Pos[0], ship.Pos[1])
-	fmt.Println("Too low: 1341")
-	fmt.Println("Too low: 1465")
 	fmt.Printf("Sum Part A: %v\n", abs(ship.Pos[0])+abs(ship.Pos[1]))
 
+	// Part A
+	shipb := ferry{
+		Facing: "E",
+		Pos:    []int{0, 0},
+	}
+
+	for _, inst := range instr {
+		shipb.PrevPos = append(shipb.PrevPos, []int{shipb.Pos[0], shipb.Pos[1]})
+		shipb.move(&inst)
+	}
+
+	shipb.PrevPos = append(shipb.PrevPos, []int{shipb.Pos[0], shipb.Pos[1]})
+	// fmt.Printf("%+v\n", shipb.PrevPos)
+
+	fmt.Printf("Manhattan distance: %v, %v\n", shipb.Pos[0], shipb.Pos[1])
+	fmt.Printf("Sum Part A: %v\n", abs(shipb.Pos[0])+abs(shipb.Pos[1]))
 }
 
 func abs(x int) int {
@@ -72,6 +88,136 @@ func abs(x int) int {
 		return -x
 	}
 	return x
+}
+
+func (s *ferry) moveWithWaypoint(inst *instruction) {
+	// Action N means to move north by the given value.
+	// Action S means to move south by the given value.
+	// Action E means to move east by the given value.
+	// Action W means to move west by the given value.
+	// Action L means to turn left the given number of degrees.
+	// Action R means to turn right the given number of degrees.
+	// Action F means to move forward by the given value in the direction the ship is currently facing.
+
+	switch inst.Dir {
+	case "N":
+		s.Pos[0] -= inst.Steps
+	case "S":
+		s.Pos[0] += inst.Steps
+	case "E":
+		s.Pos[1] += inst.Steps
+	case "W":
+		s.Pos[1] -= inst.Steps
+	case "F":
+		switch s.Facing {
+		case "N":
+			s.Pos[0] -= inst.Steps
+		case "S":
+			s.Pos[0] += inst.Steps
+		case "E":
+			s.Pos[1] += inst.Steps
+		case "W":
+			s.Pos[1] -= inst.Steps
+		default:
+			fmt.Printf("Unable to parse instruction %v - %v", inst.Dir, inst.Steps)
+		}
+	case "R":
+		switch s.Facing {
+		case "N":
+			switch inst.Steps {
+			case 90:
+				s.Facing = "E"
+			case 180:
+				s.Facing = "S"
+			case 270:
+				s.Facing = "W"
+			default:
+				fmt.Printf("Unable to parse instruction %v - %v", inst.Dir, inst.Steps)
+			}
+		case "E":
+			switch inst.Steps {
+			case 90:
+				s.Facing = "S"
+			case 180:
+				s.Facing = "W"
+			case 270:
+				s.Facing = "N"
+			default:
+				fmt.Printf("Unable to parse instruction %v - %v", inst.Dir, inst.Steps)
+			}
+		case "S":
+			switch inst.Steps {
+			case 90:
+				s.Facing = "W"
+			case 180:
+				s.Facing = "N"
+			case 270:
+				s.Facing = "E"
+			default:
+				fmt.Printf("Unable to parse instruction %v - %v", inst.Dir, inst.Steps)
+			}
+		case "W":
+			switch inst.Steps {
+			case 90:
+				s.Facing = "N"
+			case 180:
+				s.Facing = "E"
+			case 270:
+				s.Facing = "S"
+			default:
+				fmt.Printf("Unable to parse instruction %v - %v", inst.Dir, inst.Steps)
+			}
+		}
+	case "L":
+		switch s.Facing {
+		case "N":
+			switch inst.Steps {
+			case 90:
+				s.Facing = "W"
+			case 180:
+				s.Facing = "S"
+			case 270:
+				s.Facing = "E"
+			default:
+				fmt.Printf("Unable to parse instruction %v - %v", inst.Dir, inst.Steps)
+			}
+		case "E":
+			switch inst.Steps {
+			case 90:
+				s.Facing = "N"
+			case 180:
+				s.Facing = "W"
+			case 270:
+				s.Facing = "S"
+			default:
+				fmt.Printf("Unable to parse instruction %v - %v", inst.Dir, inst.Steps)
+			}
+		case "S":
+			switch inst.Steps {
+			case 90:
+				s.Facing = "E"
+			case 180:
+				s.Facing = "N"
+			case 270:
+				s.Facing = "W"
+			default:
+				fmt.Printf("Unable to parse instruction %v - %v", inst.Dir, inst.Steps)
+			}
+		case "W":
+			switch inst.Steps {
+			case 90:
+				s.Facing = "S"
+			case 180:
+				s.Facing = "E"
+			case 270:
+				s.Facing = "N"
+			default:
+				fmt.Printf("Unable to parse instruction %v - %v", inst.Dir, inst.Steps)
+			}
+		default:
+			fmt.Printf("Unable to parse instruction %v", inst.Dir)
+		}
+	}
 }
 
 func (s *ferry) move(inst *instruction) {
