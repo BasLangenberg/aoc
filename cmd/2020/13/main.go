@@ -94,6 +94,7 @@ func main() {
 
 }
 
+// Works, too slow
 func findSeq(line string) int {
 	var data []int
 
@@ -121,7 +122,9 @@ func findSeq(line string) int {
 	}
 
 	for {
+		// Setup
 		checkds := make(map[int]bool)
+
 		for key := range busses {
 			if busses[key][len(busses[key])-1] < t {
 				busses[key] = append(busses[key], busses[key][len(busses[key])-1]+key)
