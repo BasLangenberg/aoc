@@ -65,60 +65,20 @@ func main() {
 			os.Exit(1)
 		}
 	}
-	// Check
-	// fmt.Printf("Input bingo: %s\n\n", bingo)
-	// for _, val := range bingocards {
-	// for _, row := range val {
-	// for _, num := range row {
-	// fmt.Printf("%d ", num.num)
-	// }
-	// fmt.Printf("\n")
-	// }
-	// fmt.Printf("\n")
-	// }
 
-	var windex []int
-	for iter, val := range bingonums {
+	for _, val := range bingonums {
 		// Mark cards
 		for _, card := range bingocards {
 			markcard(card, val)
 		}
 		// Check for winners
-		for k, card := range bingocards {
-			// if winner(card) && len(bingocards) == 1 {
-			// 	fmt.Printf("Part 2: %d - iteration: %d\n", calcwin(card, val), iter)
-			// 	os.Exit(0)
-			// }
-
-			// if winner(card) {
-			// 	if len(bingocards) == k {
-			// 		bingocards = bingocards[:k]
-			// 		continue
-			// 	}
-			// 	bingocards = append(bingocards[:k], bingocards[k+1:]...)
-			// }
+		for _, card := range bingocards {
 			if winner(card) {
-				windex = append(windex, k)
-			}
-
-			if len(windex) == 99 {
-				for i := 0; i < 100; i++ {
-					found := true
-					for _, val := range windex {
-						if val == i {
-							found = false
-						}
-					}
-
-					if found {
-						calcwin(bingocards[i], iter)
-						os.Exit(0)
-					}
-				}
+				fmt.Printf("Part 1: %d", calcwin(card, val))
+				os.Exit(0)
 			}
 
 		}
-		fmt.Printf("Iter: %d - Len: %d\n", iter, len(windex))
 	}
 }
 
