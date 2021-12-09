@@ -1,0 +1,36 @@
+Part 2 hints
+
+gbcead cfgaeb beadf adb egafd fbeac dbfegca fdaceb dbfc bd | dfcb gedaf dcfb bcfdea
+                    7               8              4    1  | 4    ?     4    ?
+                    
+                    
+8 1 4 7 0 6 9
+                  
+als 6 cijferig:
+  if overlap 4 {
+     negen
+  }
+  
+  if !niet overlap 1 {
+     zes
+  }
+  if overlap 1 && !overlap 4 {
+     nul
+  }
+
+  6 mist 1 digit {
+    5
+  }
+  
+  3 overlapt 1 {}
+  
+  2 blijft over
+   
+
+  a 7 - 1
+  b  
+  c 8 - 6
+  d
+  e 6 - 5
+  f 
+  g 9 -4 - a
