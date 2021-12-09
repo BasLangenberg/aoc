@@ -28,15 +28,19 @@ func main() {
 	}
 
 	eightydays := simulateRepro(fish, 80)
-	fmt.Printf("Number of fish after 80 days: %d", eightydays)
+	fmt.Printf("Number of fish after 80 days: %d\n", eightydays)
 
 	twohondredsixtyfive := simulateRepro(fish, 256)
-	fmt.Printf("Number of fish after 256 days: %d", twohondredsixtyfive)
+	fmt.Printf("Number of fish after 256 days: %d\n", twohondredsixtyfive)
 
 }
 
 func simulateRepro(fish []int, days int) int {
 	school := make(map[int]int)
+
+	for i := 0; i < 9; i++ {
+		school[i] = 0
+	}
 
 	for _, val := range fish {
 		school[val] += 1
@@ -46,6 +50,7 @@ func simulateRepro(fish []int, days int) int {
 		tmp := make(map[int]int)
 		tmp[0] = school[1]
 		tmp[1] = school[2]
+		tmp[2] = school[3]
 		tmp[3] = school[4]
 		tmp[4] = school[5]
 		tmp[5] = school[6]
