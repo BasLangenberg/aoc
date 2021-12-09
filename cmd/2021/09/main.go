@@ -33,6 +33,7 @@ func main() {
 	}
 
 	risklevel := 0
+	var lowpoints [][]int
 	for y, line := range card {
 		for x, val := range line {
 			// Up
@@ -64,10 +65,12 @@ func main() {
 			}
 
 			risklevel += 1 + val
+			lowpoints = append(lowpoints, []int{x, y})
 
 		}
 	}
 
 	fmt.Printf("Part 1: %d\n", risklevel)
+	fmt.Printf("lowpoints: %+v", lowpoints)
 
 }
