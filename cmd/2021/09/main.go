@@ -72,5 +72,83 @@ func main() {
 
 	fmt.Printf("Part 1: %d\n", risklevel)
 	fmt.Printf("lowpoints: %+v", lowpoints)
+	var basinsize []int
+	for it, val := range lowpoints {
+		basincoords := make(map[string]int)
+		y, x := val[0], val[1]
+		basincoords[fmt.Sprintf("%d-%d", y, x)] = 1
+
+		// Up
+		count := 0
+		for {
+			count++
+
+			if y-count < 0 {
+				break
+			}
+			if card[y-count][x] == 9 {
+				break
+			}
+
+			basincoords[fmt.Sprintf("%d-%d", y-1, x)] = 1
+
+		}
+		// Down
+		count = 0
+		for {
+			count++
+
+			if y+count >= len(card) {
+				break
+			}
+			if card[y+count][x] == 9 {
+				break
+			}
+
+			basincoords[fmt.Sprintf("%d-%d", y+1, x)] = 1
+
+		}
+
+		// Left
+		count = 0
+		for {
+			count++
+
+			if x-count < 0 {
+				break
+			}
+			if card[y][x-count] == 9 {
+				break
+			}
+
+			basincoords[fmt.Sprintf("%d-%d", y, x-1)] = 1
+
+		}
+
+		// Right
+		count = 0
+		for {
+			count++
+
+			if count+x >= len(card[y]) {
+				break
+			}
+			if card[y][x+count] == 9 {
+				break
+			}
+
+			basincoords[fmt.Sprintf("%d-%d", y, x+1)] = 1
+
+		}
+
+		basinsize = append(basinsize, len(basincoords))
+		for key, val := range basincoords {
+			fmt.Printf("iter: %d - %v %+v\n", it, key, val)
+		}
+
+	}
+
+	fmt.Println(basinsize)
+	fmt.Println(len(lowpoints))
 
 }
