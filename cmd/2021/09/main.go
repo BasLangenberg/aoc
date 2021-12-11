@@ -9,11 +9,10 @@ import (
 
 func main() {
 	input, err := os.Open("input")
-	defer input.Close()
-
 	if err != nil {
 		fmt.Printf("Unable to open file: %v\n", err)
 	}
+	defer input.Close()
 
 	var card [][]int
 
@@ -25,10 +24,10 @@ func main() {
 		for _, num := range []byte(scanner.Text()) {
 			x, _ := strconv.Atoi(string(num))
 			line = append(line, x)
-			fmt.Printf("%d", x)
+			//		fmt.Printf("%d", x)
 
 		}
-		fmt.Printf("\n")
+		// fmt.Printf("\n")
 		card = append(card, line)
 	}
 
@@ -71,9 +70,9 @@ func main() {
 	}
 
 	fmt.Printf("Part 1: %d\n", risklevel)
-	fmt.Printf("lowpoints: %+v", lowpoints)
+	//	fmt.Printf("lowpoints: %+v", lowpoints)
 	var basinsize []int
-	for it, val := range lowpoints {
+	for _, val := range lowpoints {
 		basincoords := make(map[string]int)
 		y, x := val[0], val[1]
 		basincoords[fmt.Sprintf("%d-%d", y, x)] = 1
@@ -142,13 +141,13 @@ func main() {
 		}
 
 		basinsize = append(basinsize, len(basincoords))
-		for key, val := range basincoords {
-			fmt.Printf("iter: %d - %v %+v\n", it, key, val)
-		}
+		// for key, val := range basincoords {
+		// 	// fmt.Printf("iter: %d - %v %+v\n", it, key, val)
+		// }
 
 	}
 
-	fmt.Println(basinsize)
-	fmt.Println(len(lowpoints))
+	// fmt.Println(basinsize)
+	// fmt.Println(len(lowpoints))
 
 }
