@@ -44,15 +44,13 @@ def find_all_paths_part2(graph, start, end, path=[]):
         return []
     paths = []
     for node in graph[start]:
-        if path.count(node) >= 2 and node.islower:
-            return []
-        if node.isupper() or node != "start":
+        if node.isupper() or node != "start" or (node.islower() and path.count(node) <2):
             newpaths = find_all_paths_part2(graph, node, end, path)
             for newpath in newpaths:
                 paths.append(newpath)
     return paths
 
-graph = setup_graph("input")
+graph = setup_graph("input-tst")
 #print(graph)
 #print(find_all_paths(graph, "start", "end"))
 print(len(find_all_paths(graph, "start", "end")))
