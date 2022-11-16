@@ -36,6 +36,22 @@ def find_all_paths(graph, start, end, path=[]):
                 paths.append(newpath)
     return paths
 
+def has_more_than_one_double_lower(g):
+    s = set()
+    count = 0
+
+    for x in g:
+        if x.islower() and x in s:
+            if count != 1:
+                count = 1
+            else:
+                return True 
+
+        s.add(x)
+
+    return False
+
+
 def find_all_paths_part2(graph, start, end, path=[]):
     path = path + [start]
     if start == end:
@@ -44,14 +60,13 @@ def find_all_paths_part2(graph, start, end, path=[]):
         return []
     paths = []
     for node in graph[start]:
-        if node.isupper() or node != "start" or (node.islower() and path.count(node) <2):
+        if (node.isupper() or (node.islower() and not has_more_than_one_double_lower(path))) and node != "start":
             newpaths = find_all_paths_part2(graph, node, end, path)
             for newpath in newpaths:
                 paths.append(newpath)
     return paths
 
-graph = setup_graph("input-tst")
-#print(graph)
-#print(find_all_paths(graph, "start", "end"))
+graph = setup_graph("input")
+
 print(len(find_all_paths(graph, "start", "end")))
 print(len(find_all_paths_part2(graph, "start", "end")))
