@@ -23,7 +23,7 @@ def create_paper(inp):
 
     graph = create_graph(xy)
     fill_graphs(graph, crds)
-    fold_graph(graph, inst)
+    graph = fold_graph(graph, inst)
 
     return graph
 
@@ -38,22 +38,31 @@ def fold_graph(graph, inst):
 
             for y in range(len(down)):
                 for x in range(len(down[0])):
-                    if down[y][x] == "#":
-                        up[y][x] = down[len(up)-y][len(up[0])-x]
-
-            pprint.pprint(up)
+                    if down[len(down)-1-y][x] == "#":
+                        up[y][x] = "#"
 
             graph = up
 
         if parsed_inst[0] == "x":
-            for row in graph:
-                left = row[:int(parsed_inst[1])]
-                right = row[int(parsed_inst[1])+1:]
+            for rownum in range(len(graph)):
+                left = graph[rownum][:int(parsed_inst[1])]
+                right = graph[rownum][int(parsed_inst[1])+1:]
 
                 for c in range(len(right)):
-                    left[c] = right[len(right)-c]
+                    if right[len(right)-1-c] == "#":
+                        left[c] = "#"
 
-                row = left
+                graph[rownum] = left
+
+        count = 0
+        for row in graph:
+            for item in row:
+                if item == "#":
+                    count+=1
+
+        print(count)
+
+    return graph
 
 def create_graph(max_xy):
     return [["."] * (int(max_xy[0])) for _ in range(int(max_xy[1]))]
@@ -62,6 +71,13 @@ def fill_graphs(graph, coords):
     for c in coords:
         graph[c[1]][c[0]] = "#"
 
+def print_graph(graph):
+    for row in graph:
+        rowchars = ""
+        for char in row:
+            rowchars += char
+
+        print(rowchars)
 
 def max_x_y(coords):
     max_x = 0
@@ -76,8 +92,6 @@ def max_x_y(coords):
 
     return (max_x +1, max_y +1)
     
-def print_paper(paper):
-    pprint.pprint(paper)
+inp = "input"
+print_graph(create_paper(inp))
 
-inp = "input-tst"
-create_paper(inp)
