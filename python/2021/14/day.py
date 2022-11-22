@@ -9,7 +9,7 @@ for pair in f[2:]:
     i = str.rstrip(pair).split(" -> ")
     instructions[i[0]] = i[1]
 
-for x in range(40):
+for x in range(10):
     newpol = ""
     for y in range(len(polymer)-1):
         seq = polymer[y:y+2]
