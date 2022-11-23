@@ -17,35 +17,33 @@ for let in range(len(polymer)-1):
     if polymer[let:let+2] in counts:
         counts[polymer[let:let+2]] += 1
 
-for _ in range(10):
-    newcount = dict()
-    for key in counts:
-        if key in instructions:
-            incr = counts[key]
-            print(incr)
-            insert = key[0] + instructions[key]
-            if insert in counts:
-                if insert not in counts:
-                    newcount[insert] = 1
-
-                if insert in counts:
-                    newcount[insert] = counts[insert] + incr
-
-    print(newcount)
-
-    counts = newcount
+for _ in range(40):
+     newcount = dict()
+     for key in instructions:
+         incr = counts.get(key, 0)
+         p1 = key[0] + instructions[key]
+         p2 = instructions[key] + key[1]
 
 
+         if incr != 0:
+             #            print(f"{incr} - {p1} - {p2}")
+            newcount[p1] = newcount.get(p1,0) + incr
+            newcount[p2] = newcount.get(p2,0) + incr
 
-min = 9999999999999999999999999999999999999999999999
-max = 0
+     counts = newcount
 
-for key in counts:
-    num = counts[key]
-    if num > max:
-        max = num
+totals = {}
+for let in counts:
+    if let[0] in totals:
+        totals[let[0]] = totals[let[0]] + counts[let]
+    
+    if let[0] not in totals:
+        totals[let[0]] = counts[let]
 
-    if num < min:
-        min = num
+print(totals)
 
-print(max-min)
+maxlet = max(totals, key=totals.get)
+minlet = min(totals, key=totals.get)
+total = totals[maxlet] - totals[minlet] -1
+print(f"{totals[maxlet]} ({maxlet}) - {totals[minlet]} ({minlet}) = {total}")
+
