@@ -44,6 +44,8 @@ print(totals)
 
 maxlet = max(totals, key=totals.get)
 minlet = min(totals, key=totals.get)
+
+# Not sure why we need to do -1
 total = totals[maxlet] - totals[minlet] -1
 print(f"{totals[maxlet]} ({maxlet}) - {totals[minlet]} ({minlet}) = {total}")
 
