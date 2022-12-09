@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-from collections import Counter
-
 file = "input-tst"
-#file = "input"
+file = "input"
 
 fs = {
         "/": {}
@@ -45,8 +43,32 @@ for dir in fs:
 
     fs[dir]["total"] = dircount
 
-fs = dict(sorted(fs.items()))
+dirs = list()
+for key in fs.keys():
+    dirs.append(key)
+
+dirs.sort()
+dirs.reverse()
+
+for dir in dirs:
+    for x in dirs:
+        if x == dir:
+            continue
+        if (x.startswith(dir)) and (len(x) > len(dir)):
+            if fs[x]["total"] <= 100000:
+                fs[dir]["total"] += fs[x]["total"]
 
 
-print(fs)
 
+total = 0
+for dir in fs:
+    #    print(fs[dir]["total"])
+    if fs[dir]["total"] <= 100000:
+        total += fs[dir]["total"]
+
+#for key in fs:
+#    print(key, ": ", fs[key])
+
+print(total)
+
+# Too low: 1077499
