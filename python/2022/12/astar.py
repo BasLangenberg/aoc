@@ -22,6 +22,7 @@ class Graph:
             'C': 1,
             'D': 1
         }
+        print(self.adjacency_list[n])
 
         return H[n]
 
@@ -78,7 +79,7 @@ class Graph:
                 if m not in open_list and m not in closed_list:
                     open_list.add(m)
                     parents[m] = n
-                    g[m] = g[n] + weight
+                    g[m] = g[n] + ord(weight)
 
                 # otherwise, check if it's quicker to first visit n, then m
                 # and if it is, update parent data and g data
