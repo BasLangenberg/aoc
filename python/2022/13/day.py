@@ -1,85 +1,52 @@
 #!/usr/bin/env python3
+import json
 
 input = "input"
 input = "input-tst"
 
 pairs = []
 
-def get_bracks(pair):
-    bracks = []
-
-    for j in range(len(pair)): 
-        pos = []
-        stack = []
-        for i in range(len(pair[j])):
-            if pair[j][i] == "[":
-                stack.append(i)
-            if pair[j][i] == "]":
-                pos.append((stack.pop(), i))
-
-        pos.sort()
-        bracks.append(pos)
-
-
-    return bracks
-
-def compare(pair, brackpos):
-    lstring = pair[0]
-    rstring = pair[1]
-
-    if len(lstring) < len(rstring):
-        count = len(lstring)
-        lstringshorter = True
-    else:
-        count = len(rstring)
-        lstringshorter = False
-
-    for i in range(count):
-        # Insert missing brackets
-        if rstring[i] == "[" and lstring[i] == "[":
-            continue
-        if rstring[i] == "]" and lstring[i] == "]":
-            continue
-        if rstring[i] == "[" and lstring[i] != "[":
-            lstring = lstring[:i] + "[" + lstring[i:]
-            continue
-        if rstring[i] == "]" and lstring[i] != "]":
-            lstring = lstring[:i] + "]" + lstring[i:]
-            continue
-        if rstring[i] != "[" and lstring[i] == "[":
-            rstring = rstring[:i] + "[" + rstring[i:]
-            continue
-        if rstring[i] != "]" and lstring[i] == "]":
-            rstring = rstring[:i] + "]" + rstring[i:]
-            continue
-
-        print(lstring)
-        print(rstring)
-        if int(lstring[i]) < int(rstring[i]):
-            return True
-
-        if int(lstring[i]) > int(rstring[i]):
-            return False
-
-    if lstringshorter:
-        return True
-    else:
-        return False
-
-# BUG: This creates 1 0 from 10
 with open(input) as f:
     for pair in f.read().strip().split("\n\n"):
-        pairs.append((pair.split("\n")[0].replace(",",""),pair.split("\n")[1].replace(",","")))
+        pairs.append((json.loads(pair.split("\n")[0]),json.loads(pair.split("\n")[1])))
 
-ind = 0
-for i in range(len(pairs)):
-    br = get_bracks(pairs)
-    if compare(pairs[i], br):
-        print(f"{i+1} = True")
-        ind += i+1
+def compare_index(left,right):
+    print(left,right)
+    if type(left) is int and type(right) is int:
+        if left < right:
+            return 1
+        if left == right:
+            return -1
+    if type(left) is list and type(right) is list:
+        for x in range(min(len(left), len(right))):
+            if not compare_index(left[x], right[x]):
+                return false
+    if type(left) is int and type(right) is list:
+        return compare_index([left][0], right[0])
+    if type(left) is list and type(right) is int:
+        return compare_index(left[0], right)
+
+    return 0
+
+def compare(left, right):
+    for i in range(min(len(left), len(right))):
+        if compare_index(left[i], right[i]) < 1:
+            print(f"FALSE: {left}, {right}")
+            return False
+
+    if len(left) < len(right):
+        return True
+
+
+count = 1
+for c in range(len(pairs)):
+    left = pairs[c][0]
+    right = pairs[c][1]
+    if compare(left,right):
+        print(f"pair {c}: OK")
+        count += 1
     else:
-        print(f"{i+1} = False")
+        print(f"pair {c}: NOK")
 
-print(ind)
-
+print(count)
 # Too low: 5617
