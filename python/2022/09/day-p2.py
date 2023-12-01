@@ -3,10 +3,8 @@
 input = 'input-tst'
 input = 'input'
 
-begin = (0,0)
-hpos = (0,0)
-prevhpos = (0,0)
-tpos = (0,0)
+knot = (0,0)
+rope = ((knot,) * 10)
 
 visited = set()
 
@@ -27,36 +25,32 @@ def is_adjecent(tpos, hpos):
     return False
 
 with open(input) as f:
+    prevpiece = (10000000000000000000,100000000000000000)
     for line in f.readlines():
         direction, moves = line.strip().split(" ")
 
         for step in range(int(moves)):
-            prevhpos = hpos
-            if direction == "U":
-                hpos = (hpos[0]+1, hpos[1])
-            if direction == "D":
-                hpos = (hpos[0]-1, hpos[1])
-            if direction == "L":
-                hpos = (hpos[0], hpos[1]-1)
-            if direction == "R":
-                hpos = (hpos[0], hpos[1]+1)
+            for piece in rope:
+                if is_adjecent(piece, prevpiece):
+                    continue
 
-            if is_adjecent(tpos, hpos):
-                visited.add(tpos)
-                print(hpos, tpos)
-                continue
+                if direction == "U":
+                    piece = (piece[0]+1, piece[1])
+                if direction == "D":
+                    piece = (piece[0]-1, piece[1])
+                if direction == "L":
+                    piece = (piece[0], piece[1]-1)
+                if direction == "R":
+                    piece = (piece[0], piece[1]+1)
+    
+    
+                prevpiece = piece
 
-            tpos = prevhpos
-
-            visited.add(tpos)
-
-            print(hpos, tpos)
+            visited.add(rope[-1])    
 
         lastdir = direction
-                
-            
         
 print(len(visited))
-#print(visited)
+print(visited)
 
 # too high: 6073
