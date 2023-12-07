@@ -53,25 +53,26 @@ func main() {
 		check[tcknum] = chknms
 	}
 
-	for i := 1; i < len(tickets); i++ {
-		counter := 0
+	for i := 0; i < len(tickets); i++ {
 
-		for _, tick := range tickets[i] {
-			for _, nmbr := range tick {
-				for _, chk := range check[i] {
-					if nmbr == chk {
-						counter += 1
-						if counter+i > len(tickets) {
-							continue
+		for j := 0; j < len(tickets[i]); j++ {
+			counter := 0
+			for k := 0; k < len(tickets[i][j]); k++ {
+
+				for l := 0; l < len(check[i]); l++ {
+					if tickets[i][j][k] == check[i][l] {
+						counter++
+						if counter+i < len(tickets) {
+							cpy := tickets[i+counter][0]
+							tickets[i+counter] = append(tickets[i+counter], cpy)
 						}
-						cpy := tickets[i+counter][0]
-						tickets[i+counter] = append(tickets[i+counter], cpy)
 					}
 				}
+
 			}
 		}
-	}
 
+	}
 	cnt := 0
 	for k, v := range tickets {
 		fmt.Printf("ticket %v: %v\n", k, len(v))
