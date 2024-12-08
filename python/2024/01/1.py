@@ -44,3 +44,5 @@ for i in left:
 print(f"part 2: %s" % sum)
 
 
+for i in zip(left, right):
+    print(i)

@@ -17,13 +17,13 @@ def check_corners(x, y):
         count += 1
     if grid[y-1][x-1] == "S" and grid[y+1][x+1] == "M":
         count += 1
-    if grid[y+1][x+1] == "M" and grid[y-1][x-1] == "S":
+    if grid[y+1][x-1] == "M" and grid[y-1][x+1] == "S":
         count += 1
-    if grid[y+1][x+1] == "S" and grid[y-1][x-1] == "M":
+    if grid[y+1][x-1] == "S" and grid[y-1][x+1] == "M":
         count += 1
 
     if count == 2:
-        print(x,y)
+        print(x+1,y+1)
         return 1
 
     return 0
@@ -98,7 +98,7 @@ def check_word(dir, x, y):
     if len(loc) == 4:
         found.add(tuple(loc))
 
-with open("test-input") as f:
+with open("input") as f:
     for line in f:
         l = list()
         for char in line.strip():
@@ -122,3 +122,4 @@ print("part 2: " + str(count))
 print("")
 print("")
 print("2003 correct")
+print("Test: 9 correct")
