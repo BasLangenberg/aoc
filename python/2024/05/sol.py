@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 import math
-import sys
-
 
 with open('input') as f:
     input = f.read()
@@ -33,55 +31,44 @@ for line in rproblem.split():
                 nok.append(pages)
                 break
 
+        if nok:
+            break
+
     if ok:
         count += int(pages[math.floor(len(pages)/2)])
         continue
 
+def sort(inplist):
+    updated = False
+    for num in range(len(inplist)):
+        if inplist[num] in rules: 
+            for pnum in inplist[:num]:
+                if pnum in rules[inplist[num]]:
+                    inplist.remove(pnum)
+                    inplist.insert(num+1, pnum)
+                    updated = True
 
-def sortNok(l):
-    ok = True
-    counter = 0
-    while True: 
-        newl = list()
-        if counter > 99:
-            return -1
-
-        for pn in range(len(l)-1, -1, -1):
-            templ = list()
-            templ.append(l[pn])
-            if l[pn] not in rules:
-                continue
-    
-            rule = rules[l[pn]]
-            for x in l[:pn]:
-                if x in rule:
-                    ok = False
-                    templ.append(x)
-                    l.remove(x)
-
-            newl = newl + templ
-
-        if ok:
-            return int(pages[math.floor(len(l)/2)])
-
-        if not ok:
-            l = newl
-            counter += 1
+    return updated
 
 
-   
+def sortNok(inplist):
+    while True:
+        check = sort(inplist)
+        if check:
+            break
+
+    print(inplist)
+    return int(inplist[math.floor(len(inplist)/2)])
 
 p2count = 0
 for line in nok:
     nmbr = sortNok(line)
-    if nmbr < 0:
-        print("You wrote an endless loop moron")
-        sys.exit(1)
 
-    print(nmbr)
     p2count += nmbr
 
 
 print("p1: " + str(count))
 print("p2 too high: 80869")
+print("p2 too high: 62163")
+print("p2 too low: 4735")
 print("p2: " + str(p2count))
