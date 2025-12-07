@@ -10,17 +10,25 @@ with open("test-input") as f:
         for char in line:
             joltages.append(int(char))
 
+        grouplength = len(joltages) % 12
+        last = len(joltages)
+        groups = list()
+        while last > 0:
+            groups.append(last)
+            last -= grouplength
+
         mask = list("0" * len(joltages))
+
         high = 9
         while mask.count("1") < 12:
             if high == 0:
-                print("ERROR: HIGH IS 0")
-                break
-            for num in reversed(range(len(joltages))):
-                if mask.count("1") >= 12:
-                    break
-                if joltages[num] == high:
-                    mask[num] = "1"
+                high = 9
+            for i in groups:
+                for num in range(grouplength):
+                    if mask.count("1") >= 12:
+                        break
+                    if joltages[i-grouplength+num] == high:
+                        mask[i-grouplength+num] = "1"
 
             high -= 1
 
@@ -30,6 +38,7 @@ with open("test-input") as f:
                 parsed += str(joltages[i])
 
         print(str(joltages) + " --- " + parsed)
+        print(str(mask))
         sum += int(parsed)
         
 
