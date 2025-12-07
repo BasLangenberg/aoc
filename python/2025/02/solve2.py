@@ -1,19 +1,36 @@
 #!/usr/bin/env python3
+import math
 input = list()
 solution = 0
 
 def get_invalid(num) -> bool:
-    ln = 1
-    while ln < len(num)//2 + 1:
-        if num[:ln] == num[ln:ln+ln]:
+    if len(num) < 2:
+        return False
+
+    # We do not need to check further than halve way
+    pivot = math.ceil(len(num)/2)
+
+    for sequence_length in range(1, pivot +1):
+        has_seq = True
+        if len(num) % sequence_length != 0:
+            continue
+
+        seq = num[0:sequence_length]
+        for i in range(1, len(num)//sequence_length):
+            start = i * sequence_length
+            end = start + sequence_length
+            if num[start:end] != seq:
+                has_seq = False
+                break
+
+        if has_seq:
             return True
-        ln += 1
-    
+
     return False
 
 
-with open("test-input") as f:
-    #with open("input") as f:
+#with open("test-input") as f:
+with open("input") as f:
     input = f.readline().strip('\n').split(',')
 
 for pair in input:
